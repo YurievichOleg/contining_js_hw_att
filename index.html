@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeaturedItems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Open+Sans:wght@600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="featured__items center"></div>
+
+
+    <div class="cards center">
+        <div class="card"></div>
+        <div class="card__head">
+            <h3>Card Items</h3>
+        </div>
+    </div>
+    <div class="card"></div>
+
+
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const data = JSON.parse(dataInfo);
+        const featured__items = document.querySelector('.featured__items');
+        const card = document.querySelector('.card');
+
+        console.log(data);
+        data.forEach(element => {
+            const featured__items__product = document.createElement('div');
+            featured__items__product.classList.add('featured__items__product');
+            featured__items__product.id = element.id;
+
+            const featured__items__photo = document.createElement('div');
+            featured__items__photo.classList.add('featured__items__photo');
+            featured__items__photo.style.backgroundImage = `url(${element.image})`;
+            const featured__items__btn = document.createElement('button');
+            featured__items__btn.textContent = 'Add to Card';
+            featured__items__btn.classList.add('featured__items__btn');
+            featured__items__photo.appendChild(featured__items__btn);
+            featured__items__product.appendChild(featured__items__photo);
+
+
+            featured__items__btn.addEventListener('click', () => {
+                console.log(`Shelchock ${element.id}`);
+                console.log(searchForId(card.childNodes, element.id));
+                if (!searchForId(card.childNodes, element.id)) {
+
+
+                    const card__product = document.createElement('div');
+                    card__product.classList.add('card__product');
+                    card__product.id = element.id + 'a';
+                    console.log(card__product.id.slice(0, -1));
+
+                    const card__img = document.createElement('img');
+                    card__img.src = element.image;
+                    card__img.classList.add('card__img');
+                    card__img.alt = 'photo';
+                    card__product.appendChild(card__img);
+
+                    const card__product__div = document.createElement('div');
+                    card__product__div.classList.add('card__product__div');
+
+                    const card__div__head = document.createElement('div');
+
+                    card__div__head.classList.add('card__div__head');
+                    const card__div__head__link = document.createElement('a');
+                    card__div__head__link.classList.add('card__div__head__link');
+                    card__div__head__link.href = "#";
+                    card__div__head__link.innerHTML = 'MANGO PEOPLE <br> T-SHIRT';
+                    card__div__head.appendChild(card__div__head__link);
+
+                    const card__div__head__img = document.createElement('img');
+                    card__div__head__img.classList.add('card__div__head__img');
+                    card__div__head__img.src = 'img/close.svg';
+                    card__div__head__img.alt = 'close';
+                    card__div__head.appendChild(card__div__head__img);
+                    card__product__div.appendChild(card__div__head);
+                    card__div__head__img.addEventListener('click', event => {
+                        console.log(card__div__head__img.parentNode.parentNode.parentNode);
+                        card.removeChild(card__div__head__img.parentNode.parentNode.parentNode);
+
+                    })
+
+
+                    const card__product__price = document.createElement('p');
+                    card__product__price.classList.add('card__product__price');
+                    card__product__price.textContent = 'Price: ';
+                    const card__product__price__num = document.createElement('span');
+                    card__product__price__num.classList.add('card__product__price__num');
+                    card__product__price__num.textContent = `$ ${element.price}`;
+                    card__product__price.appendChild(card__product__price__num);
+                    card__product__div.appendChild(card__product__price);
+
+                    const card__product__color = document.createElement('p');
+                    card__product__color.classList.add('card__product__color');
+                    card__product__color.textContent = 'Color: ';
+                    const card__product__color__val = document.createElement('span');
+                    card__product__color__val.classList.add('card__product__color__val');
+                    card__product__color__val.textContent = element.color;
+                    card__product__color.appendChild(card__product__color__val);
+                    card__product__div.appendChild(card__product__color);
+
+                    const card__product__size = document.createElement('p');
+                    card__product__size.classList.add('card__product__size');
+                    card__product__size.textContent = 'Size: ';
+                    const card__product__size__val = document.createElement('span');
+                    card__product__size__val.classList.add('card__product__size__val');
+                    card__product__size__val.textContent = element.size;
+                    card__product__size.appendChild(card__product__size__val);
+                    card__product__div.appendChild(card__product__size);
+
+                    const card__product__quantity = document.createElement('p');
+                    card__product__quantity.classList.add('card__product__quantity');
+                    card__product__quantity.textContent = 'Quantity: ';
+                    const card__product__quantity__val = document.createElement('input');
+                    card__product__quantity__val.classList.add('card__product__quantity__val');
+                    card__product__quantity__val.type = 'number';
+                    card__product__quantity__val.placeholder = '1';
+                    card__product__quantity.appendChild(card__product__quantity__val);
+                    card__product__div.appendChild(card__product__quantity);
+
+
+
+                    card__product.appendChild(card__product__div);
+                    card.appendChild(card__product);
+                } else {
+                    let productAmount = document.getElementById(`${element.id}a`).querySelector('.card__product__quantity__val');
+
+                    let amount = Number(productAmount.getAttribute('placeholder')) + 1;
+                    productAmount.placeholder = amount;
+
+                    console.log(productAmount.placeholder);
+
+                }
+            })
+
+            const featured__items__head = document.createElement('h3');
+            featured__items__head.textContent = element.head;
+            featured__items__head.classList.add('featured__items__head');
+            featured__items__product.appendChild(featured__items__head);
+
+            const featured__items__text = document.createElement('p');
+            featured__items__text.textContent = element.text;
+            featured__items__text.classList.add('featured__items__text');
+            featured__items__product.appendChild(featured__items__text);
+
+            const featured__items__price = document.createElement('a');
+            featured__items__price.href = '#';
+            featured__items__price.textContent = `$ ${element.price}`;
+            featured__items__price.classList.add('featured__items__price');
+            featured__items__product.appendChild(featured__items__price);
+
+            featured__items.appendChild(featured__items__product);
+        });
+
+    </script>
+</body>
+
+</html>
